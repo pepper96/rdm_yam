@@ -1,0 +1,45 @@
+---
+title: "exercicio"
+author: "Luccas Pimenta"
+date: "2023-05-12"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+
+```{r}
+#importando a bilbioteca necessária
+library(dplyr)
+
+#criando o dataframe que receberá os resultados de cada jogada
+df_resultados <- data.frame(jogada=integer(1000),matrix(ncol=5,nrow=1000))
+
+#renomeando o campo para cada dado
+for (i in 1:5){
+  colnames(df_resultados)[colnames(df_resultados)==paste0("X",i)]<-paste0("Dado",i)
+
+}
+#simulando as jogadas
+for (i in 1:1000){
+  df_resultados$jogada[i]<-i
+  df_resultados[i,-1]<-sample(1:6,5,replace=TRUE)}
+
+df_resultados<-mutate(df_resultados,Total_jogada=Dado1+Dado2+Dado3+Dado4+Dado5)
+
+```
+
+```{r}
+library(esquisse)
+library(ggplot2)
+ggplot(df_resultados) +
+  aes(x = Total_jogada) +
+  geom_histogram(bins = 30L, fill = "#112446") +
+  theme_minimal()
+
+```
+
+
